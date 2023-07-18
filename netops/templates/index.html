@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %} NetOps {% endblock %}
+
+{% block content %}
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card bg-secondary mb-3" >
+        <div class="card-header">
+          <legend class="md-2">Setting for <span class="text-info">weekday</span></legend>
+        </div>
+        <div class="card-body" id="weekday-body">
+          <table id="weekday_setting_table" class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col"> Service name </th>
+                <th scope="col"> Description </th>
+                <th scope="col"> Crrunt Bandwidth</th>
+                <th scope="col"> Setting </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in services %}
+                <tr>
+                  <th scope="row">{{ s.name }}</th>
+                  <td>{{ s.description }}</td>
+                  {% if s.weekday_bandwidth < 1000000 %}
+                    <td><p>{% widthratio s.weekday_bandwidth 1000 1 %} Kbits/sec</td>
+                  {% else %}
+                    <td><p>{% widthratio s.weekday_bandwidth 1000000 1 %} Mbits/sec</td>
+                  {% endif %}
+                  <td>
+                    <form action="/netops/services/{{ s.id }}" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" class="form-control" name="name" value="{{ s.name }}">
+                      <input type="hidden" class="form-control" name="id" value="{{ s.id }}">
+                      <input type="text" class="form-control" name="weekday_bandwidth">
+                      <button type="submit" class="btn btn-primary"> Apply </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            <tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card bg-secondary mb-3" >
+        <div class="card-header">
+          <legend class="md-2">Setting for <span class="text-info">weekend</span></legend>
+        </div>
+        <div class="card-body" id="weekend-body">
+          <table id="weekend_setting_table" class="table">
+            <thead>
+              <tr>
+                <th scope="col"> Service name </th>
+                <th scope="col"> Description </th>
+                <th scope="col"> Current Bandwidth </th>
+                <th scope="col"> Setting </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in services %}
+                <tr>
+                  <th scope="row">{{ s.name }}</th>
+                  <td>{{ s.description }}</td>
+                  {% if s.weekend_bandwidth < 1000000 %}
+                  <td><p>{% widthratio s.weekend_bandwidth 1000 1 %} Kbits/sec</td>
+                    {% else %}
+                    <td><p>{% widthratio s.weekend_bandwidth 1000000 1 %} Mbits/sec</td>
+                  {% endif %}
+                  <td>
+                    <form action="/netops/services/{{ s.id }}" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" class="form-control" name="name" value="{{ s.name }}">
+                      <input type="hidden" class="form-control" name="id" value="{{ s.id }}">
+                      <input type="text" class="form-control" name="weekend_bandwidth">
+                      <button type="submit" class="btn btn-primary"> Apply </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>  
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <form action="/netops/services" method="post">
+        {% csrf_token %}
+        <legend class="md-2">Add new service</legend>
+        <div class="form-group">
+          <label for="name">Service name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Service name"></input>
+          <label for="description">Description</label>
+          <textarea  type="text" class="form-control" id="description" name="description" placeholder="Description" rows=3></textarea>
+          <button type="submit" class="btn btn-primary mt-2">Add</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+
+{% endblock %}

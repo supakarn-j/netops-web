@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      {% block title %}{% endblock  %}
+    </title>
+    <link rel="stylesheet" href="https://bootswatch.com/5/lux/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@5.15.3/css/all.min.css" />
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation">
+      <div class="container-fluid">
+        {% comment %} <a class="navbar-brand" href="/" rel="home" title="Securely Share Configurations">
+          <img alt="NetOps" class="logo" src="/logo.png" />
+        </a>  {% endcomment %}
+        <a class="navbar-brand" href="/">NetOps</a>
+        <button aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#mainNavbar" data-bs-toggle="collapse" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+    
+    <div class="container" id="html_body">
+      <section>
+        {% block content %}
+        {% endblock %}
+      </section>
+    </div>
+  </body>
+</html>
